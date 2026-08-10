@@ -88,3 +88,53 @@ test('invalid site data is rejected', function () {
 
     $this->assertDatabaseCount('sites', 0);
 });
+
+test('a site can be updated', function () {
+    $client = Client::factory()->create();
+
+    $site = Site::factory()
+        ->for($client)
+        ->create();
+
+    $response = $this->patch(
+        route('sites.update', [$client, $site]),
+        [
+            'name' => 'Updated Site',
+            'url' => 'https://updated.example.com',
+            'status' => 'inactive',
+            'notes' => 'Updated notes',
+        ]
+    );
+
+    $response->assertRedirect(
+        route('sites.show', [$client, $site])
+    );
+
+    $this->assertDatabaseHas('sites', [
+        'id' => $site->id,
+        'name' => 'Updated Site',
+        'url' => 'https://updated.example.com',
+        'status' => 'inactive',
+        'notes' => 'Updated notes',
+    ]);
+});
+
+test('a site can be deleted', function () {
+    $client = Client::factory()->create();
+
+    $site = Site::factory()
+        ->for($client)
+        ->create();
+
+    $response = $this->delete(
+        route('sites.destroy', [$client, $site])
+    );
+
+    $response->assertRedirect(
+        route('clients.show', $client)
+    );
+
+    $this->assertDatabaseMissing('sites', [
+        'id' => $site->id,
+    ]);
+});
