@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Client;
+use App\Models\Site;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\assertDatabaseHas;
@@ -9,43 +10,29 @@ use function Pest\Laravel\assertDatabaseHas;
 pest()->use(RefreshDatabase::class);
 
 test('a site can be viewed', function () {
-    $client = Client::create([
-        'name' => 'Test Client',
-        'email' => 'test@example.com',
-        'company' => 'Test Company',
-    ]);
 
-    $site = $client->sites()->create([
-        'name' => 'Test Site',
-        'url' => 'https://example.com',
-        'status' => 'active',
-        'notes' => 'This is a test site.',
-    ]);
+    $client = Client::factory()->create();
+
+
+    $site = Site::factory()
+        ->for($client)
+        ->create();
 
     $response = $this->get(
         route('sites.show', [$client, $site])
     );
 
     $response->assertStatus(200);
-    $response->assertSee('Test Site');
+    $response->assertSee($site->name);
 });
 
 test('a site cannot be viewed under the wrong client', function () {
-    $clientA = Client::create([
-        'name' => 'Client A',
-        'email' => 'a@example.com',
-    ]);
+    $clientA = Client::factory()->create();
+    $clientB = Client::factory()->create();
 
-    $clientB = Client::create([
-        'name' => 'Client B',
-        'email' => 'b@example.com',
-    ]);
-
-    $site = $clientA->sites()->create([
-        'name' => 'Client A Site',
-        'url' => 'https://client-a.example.com',
-        'status' => 'active',
-    ]);
+    $site = Site::factory()
+        ->for($clientA)
+        ->create();
 
     $response = $this->get(
         route('sites.show', [$clientB, $site])
@@ -54,10 +41,7 @@ test('a site cannot be viewed under the wrong client', function () {
     $response->assertStatus(404);
 });
 test('a site can be created for a client', function () {
-    $client = Client::create([
-        'name' => 'Test Client',
-        'email' => 'test@example.com',
-    ]);
+    $client = Client::factory()->create();
 
     $response = $this->post(
         route('sites.store', $client),
@@ -79,10 +63,7 @@ test('a site can be created for a client', function () {
     ]);
 });
 test('invalid site data is rejected', function () {
-    $client = Client::create([
-        'name' => 'Test Client',
-        'email' => 'test@example.com',
-    ]);
+    $client = Client::factory()->create();
 
     $response = $this->from(
         route('sites.create', $client)
