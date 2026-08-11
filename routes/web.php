@@ -5,6 +5,9 @@ use App\Http\Controllers\SiteController;
 
 use Illuminate\Support\Facades\Route;
 
+
+#client routes
+
 Route::get('/', [ClientController::class, 'index'])->name('clients.index');
 
 Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
@@ -13,6 +16,19 @@ Route::post('/clients', [ClientController::class, 'store'])->name('clients.store
 
 
 Route::get('/clients/{client}', [ClientController::class, 'show'])->name('clients.show');
+
+Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
+
+Route::patch('/clients/{client}', [ClientController::class, 'update'])->name('clients.update');
+
+Route::delete(
+    '/clients/{client}',
+    [ClientController::class, 'destroy']
+)->name('clients.destroy');
+
+
+
+#site routes
 
 Route::get('/clients/{client}/sites/create', [SiteController::class, 'create'])->name('sites.create');
 
