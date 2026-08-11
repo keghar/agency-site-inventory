@@ -57,8 +57,7 @@ class ClientController extends Controller
     }
     public function destroy(Client $client)
     {
-        // Use the static destroy method to ensure an ID is provided if delete() requires an argument
-        Client::destroy($client->id);
+        $client->delete();
 
         return redirect()
             ->route('clients.index')
