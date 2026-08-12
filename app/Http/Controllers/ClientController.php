@@ -14,7 +14,7 @@ class ClientController extends Controller
         $clients = Client::all();
         $title = 'Agency Site Inventory';
 
-        return view('welcome', compact('clients', 'title'));
+        return view('clients.index', compact('clients', 'title'));
     }
 
     public function create()

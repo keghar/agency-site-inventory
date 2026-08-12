@@ -13,7 +13,7 @@ class DashboardController extends Controller
         $title = 'Agency Site Inventory';
         $clientCount = Client::count();
         $siteCount = Site::count();
-        $recentSites = Site::latest()->take(3)->get();
+        $recentSites = Site::with('client')->latest()->take(3)->get();
 
         return view('dashboard', compact('title', 'clientCount', 'siteCount', 'recentSites'));
     }
