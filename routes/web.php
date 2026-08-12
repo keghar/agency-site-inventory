@@ -32,6 +32,8 @@ Route::delete(
 
 #site routes
 
+Route::get('/sites', [SiteController::class, 'index'])->name('sites.index');
+
 Route::get('/clients/{client}/sites/create', [SiteController::class, 'create'])->name('sites.create');
 
 Route::post('/clients/{client}/sites', [SiteController::class, 'store'])->name('sites.store');
@@ -46,3 +48,6 @@ Route::delete(
     '/clients/{client}/sites/{site}',
     [SiteController::class, 'destroy']
 )->name('sites.destroy')->scopeBindings();
+
+
+#site search

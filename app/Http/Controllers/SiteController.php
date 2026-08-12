@@ -10,6 +10,38 @@ use Illuminate\Http\Request;
 class SiteController extends Controller
 {
 
+    public function index(Request $request)
+    {
+
+        $validated = $request->validate([
+            'status' => ['nullable', 'string', 'in:active,inactive,pending'],
+        ]);
+        $search = $request->query('search');
+        $status = $validated['status'] ?? null;
+
+
+        $sites = Site::with('client')
+
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('url', 'like', "%{$search}%");
+                });
+            })
+
+            ->when($status, function ($query, $status) {
+
+                $query->where('status', $status);
+            })
+
+            ->get();
+
+        $title = 'Sites we manage';
+
+        return view('sites.index', compact('sites', 'title'));
+    }
+
+
     #Create Site
     public function create(Client $client)
     {
