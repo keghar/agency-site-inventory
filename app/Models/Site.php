@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-#[Fillable(['name', 'url', 'status', 'client_id', 'notes'])]
+#[Fillable(['name', 'url', 'status', 'client_id', 'notes', 'hosting_provider_id'])]
 class Site extends Model
 {
     use HasFactory;
@@ -14,5 +14,10 @@ class Site extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function hostingProvider()
+    {
+        return $this->belongsTo(HostingProvider::class);
     }
 }

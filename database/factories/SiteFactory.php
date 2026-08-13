@@ -4,7 +4,10 @@ namespace Database\Factories;
 
 use App\Models\Site;
 use App\Models\Client;
+use App\Models\HostingProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
+
+
 
 /**
  * @extends Factory<Site>
@@ -18,6 +21,7 @@ class SiteFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
             'name' => $this->faker->domainName(),
             'url' => $this->faker->url(),
@@ -28,6 +32,7 @@ class SiteFactory extends Factory
             ]),
             'notes' => $this->faker->sentence(),
             'client_id' => Client::factory(),
+            'hosting_provider_id' => HostingProvider::factory(),
         ];
     }
 }

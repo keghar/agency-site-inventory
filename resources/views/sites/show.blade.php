@@ -20,6 +20,40 @@
                 {{ $site->url }}
             </a>
         </div>
+        #display hosting provider if it exists
+
+    <div class="mt-4 inline-flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-800/60 px-4 py-3">
+
+        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-700 text-slate-300">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                class="h-5 w-5"
+            >
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.75 5.25A2.25 2.25 0 0 1 6 3h12a2.25 2.25 0 0 1 2.25 2.25v3A2.25 2.25 0 0 1 18 10.5H6A2.25 2.25 0 0 1 3.75 8.25v-3Zm0 10.5A2.25 2.25 0 0 1 6 13.5h12a2.25 2.25 0 0 1 2.25 2.25v3A2.25 2.25 0 0 1 18 21H6a2.25 2.25 0 0 1-2.25-2.25v-3Z"
+                />
+            </svg>
+        </div>
+
+        <div>
+            <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                Hosting Provider
+            </p>
+<p class="mt-0.5 text-sm font-semibold text-slate-100">
+    {{ $site->hostingProvider?->name ?? 'No Hosting Provider' }}
+</p>
+
+        </div>
+
+    </div>
+
+
+
+        </div>
 
         <x-site-status :status="$site->status" />
     </div>

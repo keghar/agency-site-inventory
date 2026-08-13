@@ -6,46 +6,27 @@ use App\Models\Client;
 use App\Models\Site;
 
 use Illuminate\Http\Request;
+use App\Models\HostingProvider;
 
 class SiteController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
-
-        $validated = $request->validate([
-            'status' => ['nullable', 'string', 'in:active,inactive,pending'],
-        ]);
-        $search = $request->query('search');
-        $status = $validated['status'] ?? null;
-
-
-        $sites = Site::with('client')
-
-            ->when($search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $query->where('name', 'like', "%{$search}%")
-                        ->orWhere('url', 'like', "%{$search}%");
-                });
-            })
-
-            ->when($status, function ($query, $status) {
-
-                $query->where('status', $status);
-            })
-
-            ->get();
 
         $title = 'Sites we manage';
 
-        return view('sites.index', compact('sites', 'title'));
+        return view('sites.index', compact('title'));
     }
+
+
 
 
     #Create Site
     public function create(Client $client)
     {
-        return view('sites.create', compact('client'));
+        $hostingProviders = HostingProvider::all();
+        return view('sites.create', compact('client', 'hostingProviders'));
     }
 
     #store Created Site
@@ -56,6 +37,7 @@ class SiteController extends Controller
             'url' => 'required|url|unique:sites,url',
             'status' => 'required|in:active,inactive,pending',
             'notes' => 'nullable|string',
+            'hosting_provider_id' => 'required|exists:hosting_providers,id',
         ]);
 
         $client->sites()->create($validated);
@@ -72,18 +54,21 @@ class SiteController extends Controller
     #edit Site
     public function edit(Client $client, Site $site)
     {
-        return view('sites.edit', compact('client', 'site'));
+        $hostingProviders = HostingProvider::all();
+        return view('sites.edit', compact('client', 'site', 'hostingProviders'));
     }
 
     #update site
     public function update(Request $request, Client $client, Site $site)
     {
 
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'url' => 'required|url|unique:sites,url,' . $site->id,
             'status' => 'required|in:active,inactive,pending',
             'notes' => 'nullable|string',
+            'hosting_provider_id' => 'required|exists:hosting_providers,id',
         ]);
         $site->update($validated);
         return redirect()->route('sites.show', [$client, $site])->with('success', 'Site Updated Successfully');

@@ -10,6 +10,12 @@
 
         <label for="url">Site URL:</label>
         <input type="url" name="url" id="url" required><br>
+        <label for="hosting_provider_id">Hosting Provider:</label>
+        <select name="hosting_provider_id" id="hosting_provider_id" required>
+            @foreach($hostingProviders as $provider)
+                <option value="{{ $provider->id }}" {{ old('hosting_provider_id') == $provider->id ? 'selected' : '' }}>{{ $provider->name }}</option>
+            @endforeach
+        </select><br>
 
         <label for="status">Status:</label>
         <select name="status" id="status" required>

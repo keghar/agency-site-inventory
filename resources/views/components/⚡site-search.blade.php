@@ -18,36 +18,25 @@ new class extends Component
                     $query->where('name', 'like', "%{$this->search}%")
                         ->orWhere('url', 'like', "%{$this->search}%");
                 });
-            })->when($this->status, function ($query) {
-
-    // Filter by status if a status is selected
-                $query->where('status', $this->status);
-
-})
+            })->when(
+    in_array($this->status, ['active', 'inactive', 'pending'], true),
+    function ($query) {
+        $query->where('status', $this->status);
+    }
+)
             ->get();
     }
 };
 ?>
 <div>
 <div class="max-w-lg">
-    <input
-        type="text"
-        wire:model.live="search"
-        placeholder="Search sites..."
-    >
-    <select wire:model.live="status">
-    <option value="">All Statuses</option>
-    <option value="active">Active</option>
-    <option value="inactive">Inactive</option>
-    <option value="pending">Pending</option>
-</select>
 
 
         <label for="search" class="sr-only">
             Search sites
         </label>
 
-        <div class="flex gap-2">
+        <div class="flex gap-2 mt-5">
 
             <input
                 type="text"
@@ -56,7 +45,7 @@ new class extends Component
                 name="search"
                 placeholder="Search sites..."
 
-                class="w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-white placeholder-slate-500 outline-none focus:border-blue-500"
+                class="w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-white placeholder-slate-500 outline-none focus:border-blue-500 data-loading:opacity-50"
             >
             <select
     name="status"
