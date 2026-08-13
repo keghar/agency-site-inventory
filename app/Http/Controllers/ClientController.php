@@ -26,6 +26,7 @@ class ClientController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:clients,email',
+            'phone' => 'nullable|string|max:20',
             'company' => 'nullable|string|max:255',
         ]);
 
@@ -50,6 +51,7 @@ class ClientController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('clients', 'email')->ignore($client),],
+            'phone' => 'nullable|string|max:20',
             'company' => 'nullable|string|max:255',
         ]);
         $client->update($validated);
