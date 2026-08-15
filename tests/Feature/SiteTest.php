@@ -2,6 +2,7 @@
 
 use App\Models\Client;
 use App\Models\Site;
+use App\Models\HostingProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\assertDatabaseHas;
@@ -42,6 +43,7 @@ test('a site cannot be viewed under the wrong client', function () {
 });
 test('a site can be created for a client', function () {
     $client = Client::factory()->create();
+    $hostingProvider = HostingProvider::factory()->create();
 
     $response = $this->post(
         route('sites.store', $client),
@@ -50,6 +52,7 @@ test('a site can be created for a client', function () {
             'url' => 'https://newsite.example.com',
             'status' => 'active',
             'notes' => 'New test site',
+            'hosting_provider_id' => $hostingProvider->id,
         ]
     );
 
@@ -57,7 +60,7 @@ test('a site can be created for a client', function () {
         route('clients.show', $client)
     );
 
-    $this->assertDatabaseHas('sites', [
+    assertDatabaseHas('sites', [
         'name' => 'New Site',
         'client_id' => $client->id,
     ]);
@@ -103,6 +106,7 @@ test('a site can be updated', function () {
             'url' => 'https://updated.example.com',
             'status' => 'inactive',
             'notes' => 'Updated notes',
+            'hosting_provider_id' => HostingProvider::factory()->create()->id,
         ]
     );
 
