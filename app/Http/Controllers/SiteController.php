@@ -48,6 +48,7 @@ class SiteController extends Controller
     #show site
     public function show(Client $client, Site $site)
     {
+        $site->load(['hostingProvider', 'links']);
         return view('sites.show', compact('client', 'site'));
     }
 

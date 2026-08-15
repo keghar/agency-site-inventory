@@ -20,4 +20,9 @@ class Site extends Model
     {
         return $this->belongsTo(HostingProvider::class);
     }
+
+    public function links()
+    {
+        return $this->hasMany(SiteLink::class);
+    }
 }

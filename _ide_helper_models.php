@@ -19,6 +19,7 @@ namespace App\Models{
  * @property string|null $company
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $phone
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Site> $sites
  * @property-read int|null $sites_count
  * @method static \Database\Factories\ClientFactory factory($count = null, $state = [])
@@ -30,6 +31,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Client whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Client whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Client whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Client wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Client whereUpdatedAt($value)
  */
 	class Client extends \Eloquent {}
@@ -41,6 +43,9 @@ namespace App\Models{
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Site> $sites
+ * @property-read int|null $sites_count
+ * @method static \Database\Factories\HostingProviderFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostingProvider newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostingProvider newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostingProvider query()
@@ -80,6 +85,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Site whereUrl($value)
  */
 	class Site extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SiteLink newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SiteLink newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SiteLink query()
+ */
+	class SiteLink extends \Eloquent {}
 }
 
 namespace App\Models{

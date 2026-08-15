@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\SiteLinkController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,15 @@ Route::delete(
     '/clients/{client}/sites/{site}',
     [SiteController::class, 'destroy']
 )->name('sites.destroy')->scopeBindings();
+
+#site link routes
+Route::scopeBindings()->group(function () {
+    Route::get('/clients/{client}/sites/{site}/links/create', [SiteLinkController::class, 'create'])->name('site_links.create');
+    Route::post('/clients/{client}/sites/{site}/links', [SiteLinkController::class, 'store'])->name('site_links.store');
+    Route::get('/clients/{client}/sites/{site}/links/{link}/edit', [SiteLinkController::class, 'edit'])->name('site_links.edit');
+    Route::patch('/clients/{client}/sites/{site}/links/{link}', [SiteLinkController::class, 'update'])->name('site_links.update');
+    Route::delete('/clients/{client}/sites/{site}/links/{link}', [SiteLinkController::class, 'destroy'])->name('site_links.destroy');
+});
 
 
 #site search
