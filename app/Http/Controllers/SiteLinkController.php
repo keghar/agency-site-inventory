@@ -31,7 +31,7 @@ class SiteLinkController extends Controller
         $site->links()->create($validatedData);
 
         return redirect()
-            ->route('sites.edit', [$client, $site])
+            ->route('sites.show', [$client, $site])
             ->with('success', 'Link added successfully.');
     }
 
@@ -61,7 +61,7 @@ class SiteLinkController extends Controller
         $link->update($validatedData);
 
         return redirect()
-            ->route('sites.edit', [$client, $site])
+            ->route('sites.show', [$client, $site])
             ->with('success', 'Link updated successfully.');
     }
 
@@ -73,7 +73,7 @@ class SiteLinkController extends Controller
         $link->delete();
 
         return redirect()
-            ->route('sites.edit', [$client, $site])
+            ->route('sites.show', [$client, $site])
             ->with('success', 'Link deleted successfully.');
     }
 }
